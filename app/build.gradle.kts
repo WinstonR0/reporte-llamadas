@@ -18,6 +18,10 @@ android {
 
 
     /*
+
+    Configuracion para el huawey
+
+
     defaultConfig {
         applicationId = "com.example.reportellamadas"
         minSdk = 24
@@ -45,6 +49,8 @@ android {
 }
 
 dependencies {
+    // Librería oficial de Android para ejecutar tareas en segundo plano <- esto es esencial para automatizar que registre llamadas
+    implementation("androidx.work:work-runtime:2.9.0")
     implementation("org.apache.poi:poi:5.2.3")
     implementation("org.apache.poi:poi-ooxml:5.2.3")
     implementation("org.apache.xmlbeans:xmlbeans:5.1.1")

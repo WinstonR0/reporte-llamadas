@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // se programa el worker para que funcione en 10s
+        programarPruebaWorker();
+
 
         Button btnGenerar = findViewById(R.id.btnGenerar);
 
@@ -174,4 +180,33 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
+
+    /*
+     * Este método programa una ejecución única.
+     *
+     * Usamos OneTimeWorkRequest porque solo queremos
+     * que se ejecute UNA vez.
+     */
+    private void programarPruebaWorker() {
+
+        /*
+         * Creamos la solicitud del trabajo.
+         *
+         * setInitialDelay → indica cuánto tiempo debe esperar
+         * antes de ejecutarse.
+         *
+         * En este caso: 10 segundos.
+         */
+        OneTimeWorkRequest workRequest =
+                new OneTimeWorkRequest.Builder(ReporteWorker.class)
+                        .setInitialDelay(10, java.util.concurrent.TimeUnit.SECONDS)
+                        .build();
+
+        /*
+         * Enviamos la solicitud al sistema.
+         * WorkManager se encargará de ejecutarla.
+         */
+        WorkManager.getInstance(this).enqueue(workRequest);
+    }
+
 }
